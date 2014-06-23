@@ -1,9 +1,9 @@
-%global commit
+%global commit da5c7988253f9a09851fc97f36f0fe4e7db07b9a
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           picojson
 Summary:        A header-file-only, JSON parser serializer in C++
-Version:        0.0.1
+Version:        1.0.0
 Release:        1.%{shortcommit}%{?dist}
 
 Group:          Development/Libraries
@@ -13,6 +13,9 @@ URL:            https://github.com/kazuho/picojson
 
 Source0:        https://github.com/kazuho/picojson/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
 BuildArch:      noarch
+
+BuildRequires:  automake
+Requires:       gcc-libstdc++-devel
 
 %description
 PicoJSON is a tiny JSON parser / serializer for C++ with following properties:
@@ -26,21 +29,20 @@ provides both pull interface and streaming (event-based) interface
 %setup -qn %{name}-%{commit}
 
 %build
-echo
-
-%check
 echo "Nothing to do"
 
+%check
+make test
+
 %install
-
-
+mkdir -p %{buildroot}%{_includedir}
+install -m 0644 picojson.h %{buildroot}%{_includedir}/picojson.h
 
 %files
 %{_includedir}/picojson.h
-%doc README.mkdn
-# install examples?
+%doc LICENSE README.mkdn examples
 
 %changelog
-* Tue Jun 3 2014 Timothy St. Clair <tstclair@redhat.com> 0.0.1-1.
--
+* Mon Jun 23 2014 Timothy St. Clair <tstclair@redhat.com> 1.0.0-1
+- initial rpm
 
